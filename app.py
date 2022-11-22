@@ -1,19 +1,26 @@
 from flask import Flask, render_template
 from generateMeme import *
-# from decouple import config
+from decouple import config
 from flask_sqlalchemy import SQLAlchemy
-import pymysql
-
+ 
 import os
-user = os.environ.get("DB_USER")
-password = os.environ.get("DB_PASSWORD")
-host = os.environ.get("DB_HOST")
-port = os.environ.get("DB_PORT")
-database = os.environ.get("DB_NAME")
+user = config("DB_USER")
+password = config("DB_PASSWORD")
+host = config("DB_HOST")
+port = config("DB_PORT")
+database = config("DB_NAME")
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://'+user+':'+password+'@'+host+':'+port+'/'+database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://'+user+':'+password+'@'+host+':'+port+'/'+database
 db = SQLAlchemy(app)
+
+from Models.User import User
+from Models.Category import Category
+from Models.TemplateCategory import TemplateCategory
+from Models.Meme import Meme
+
+with app.app_context():
+    db.create_all()
 
 @app.route("/")
 def hello_world():
