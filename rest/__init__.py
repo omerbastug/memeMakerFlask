@@ -24,4 +24,4 @@ with app.app_context():
     #     print(item.id)
 
 
-from rest.Routes import helloworld,createMeme, getTheLatestMeme
+from rest.Routes import helloworld, createMeme, getTheLatestMeme, register, login
