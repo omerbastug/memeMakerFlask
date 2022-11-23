@@ -5,16 +5,16 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 
 
-def generate_meme(image_path, top_text, bottom_text='', font_path='./fonts/impact/impact.ttf', font_size=9,
+def generate_meme(imageBufferOrURL, top_text, bottom_text='', font_path='./fonts/impact/impact.ttf', font_size=9,
                   stroke_width=2,net=False):
-    source = image_path
+    source = imageBufferOrURL
     # load image
     if net:
-        response = requests.get(image_path)
+        response = requests.get(imageBufferOrURL)
         source = BytesIO(response.content)
 
     im = Image.open(source)
-    # im = Image.open(image_path)
+    # im = Image.open(imageBufferOrURL)
     draw = ImageDraw.Draw(im)
     image_width, image_height = im.size
 
