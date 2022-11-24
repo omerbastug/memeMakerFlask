@@ -22,6 +22,6 @@ def login():
             return jsonify({"error":"wrong password"})
     except BaseException as err:
         print(err)
-        return jsonify({"error":"?"})
+        return jsonify({"error":"?"}), 400
         
     return jsonify({"success":"logged in " + str(user.id)})

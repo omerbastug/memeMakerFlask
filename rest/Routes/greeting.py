@@ -14,5 +14,5 @@ def greet_user():
         lower = res[2].format("user") if res[2] else ""
         generate_meme(imageBufferOrURL=path, top_text=upper, bottom_text=lower,net=False)
     except BaseException as err:
-        return jsonify({"oops": err})
+        return jsonify({"oops": err}) , 500
     return redirect("/api/getmeme")

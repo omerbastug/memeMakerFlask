@@ -18,6 +18,6 @@ def register():
         newuser.addToDB()
     except BaseException as err:
         print(err)
-        return jsonify({"error":err})
+        return jsonify({"error":err}), 400
 
-    return jsonify({"success":"account created"})
+    return jsonify({"success":"account created"}) , 201

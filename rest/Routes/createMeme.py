@@ -12,12 +12,12 @@ def create_meme():
     lower = request.form.get("lower") or ""
     upper = request.form.get("upper") or ""
     if upper + lower == "":
-        return jsonify({"nope":"give me something"})
+        return jsonify({"nope":"give me something"}), 400
 
     try:
         generate_meme(source, net=isNet, top_text=upper,bottom_text=lower)
     except BaseException as err:
         print(err)
-        return jsonify({"failed":"oops"})
+        return jsonify({"failed":"oops"}), 500
     else:
-        return jsonify({"success":"ok"})
+        return jsonify({"success":"ok"}), 200
