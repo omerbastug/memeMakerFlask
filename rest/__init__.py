@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://'+user+':'+password+'@'+host+':'+port+'/'+database
 db = SQLAlchemy(app)
 
-from rest.Models import User,Category,TemplateCategory,Meme
+from rest.Models import User,Category,TemplateCategory,Meme, MemeText
 
 with app.app_context():
     db.create_all()
@@ -24,4 +24,4 @@ with app.app_context():
     #     print(item.id)
 
 
-from rest.Routes import helloworld, createMeme, getTheLatestMeme, register, login
+from rest.Routes import helloworld, createMeme, getTheLatestMeme, register, login, greeting
