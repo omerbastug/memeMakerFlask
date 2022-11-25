@@ -9,7 +9,7 @@ def login():
     try:
         user = User.query.filter_by(email=body['email']).first()
         if not user:
-            return jsonify({"error":"user not found"})
+            return jsonify({"error":"user not found"}), 404
         bytepassword = body['password'].encode('utf-8')
 
         salt = user.salt.encode('utf-8')
@@ -19,9 +19,9 @@ def login():
         userhash = user.hash.encode('utf-8')
 
         if hash != userhash:
-            return jsonify({"error":"wrong password"})
+            return jsonify({"error":"wrong password"}), 401
     except BaseException as err:
         print(err)
-        return jsonify({"error":"?"}), 400
+        return jsonify({"error":"?"}), 500
         
     return jsonify({"success":"logged in " + str(user.id)})
