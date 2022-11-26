@@ -7,15 +7,21 @@ from io import BytesIO
 def greet_user():
     link = None
     username = None
+    getLink = False
     try:
         body = request.get_json()
-        print(body)
         username = body.get("username")
-        link = body.get("image") 
+        link = body.get("image")
+
+        getLink = body.get("getLink") == "1"
     except:
         pass
-    greet = GreetingMeme(baseImageLink= link)
-    image = greet.draw(username=username)
+    greet = GreetingMeme(baseImageLink= link, dontSaveTemplate= True, username= username)
+    image = greet.draw()
+
+    if getLink:
+        return jsonify({"src" : greet.srcLink})
+
     img_io = BytesIO()
     image.save(img_io, image.format, quality=70)
     img_io.seek(0)
