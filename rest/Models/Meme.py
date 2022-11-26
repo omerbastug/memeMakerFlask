@@ -18,6 +18,13 @@ class Meme(db.Model,BaseModel):
     userId = db.Column(db.Integer(), db.ForeignKey("user.id"), nullable=False)
 
     def __init__(self, **kwargs):
+        if kwargs.get("dontSave"):
+            self.dontSave = True
+            kwargs.__delitem__("dontSave")
+        if kwargs.get("dontSaveTemplate"):
+            self.dontSaveTemplate = True
+            kwargs.__delitem__("dontSaveTemplate")
+                
         super(Meme, self).__init__(**kwargs)
 
         if not self.baseImageLink:
@@ -46,7 +53,7 @@ class Meme(db.Model,BaseModel):
             source = BytesIO(response.content)
             self.image = Image.open(source)
 
-        if not TemplateCategory.query.filter_by(templateLink= self.baseImageLink).first():
+        if not TemplateCategory.query.filter_by(templateLink= self.baseImageLink).first() and not hasattr(self,"dontSaveTemplate"):
             template = TemplateCategory(templateLink= self.baseImageLink, categoryId=self.category if hasattr(self,"category") else 2)
             db.session.add(template)
 
@@ -54,7 +61,9 @@ class Meme(db.Model,BaseModel):
     def draw(self):
         # todo: upload to s3 and save record to database
         img = generate_meme(pilImage=self.image, top_text=self.upper, bottom_text=self.lower)
-       
+        if self.dontSave:
+            return img
+
         img_io = BytesIO()
         img.save(img_io, img.format, quality=70)
         img_io.seek(0)
