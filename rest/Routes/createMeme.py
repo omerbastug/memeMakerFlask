@@ -23,8 +23,7 @@ def create_meme():
     pil_img =meme.draw() 
 
     if body.get("getLink") == "1":
-        pil_img.save("meme.png")
-        return jsonify({"src":"http://localhost:5000/api/getmeme"}) # going to change
+        return jsonify({"src":meme.srcLink})
     else :
         img_io = BytesIO()
         

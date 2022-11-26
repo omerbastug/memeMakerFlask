@@ -1,8 +1,10 @@
-from rest import db
+from rest import db, s3client
 from generateMeme import *
 from rest.Models.BaseModel import BaseModel
+from rest.Models.TemplateCategory import TemplateCategory
 from io import BytesIO
 import requests
+import uuid
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -23,14 +25,47 @@ class Meme(db.Model,BaseModel):
 
         # set PIL image
         if not isinstance(self.baseImageLink,str):
-            # todo: upload to s3 and assign link
             self.image = Image.open(self.baseImageLink)
-            self.baseImageLink = "link generated after s3 upload"
+
+            # todo: upload to s3 and assign link
+            img_io = BytesIO()
+            self.image.save(img_io,format= self.image.format)
+            img_io.seek(0)
+
+            key = str(uuid.uuid4())
+            s3client.put_object(
+                Bucket="meme-maker-memes-flask",
+                Body= img_io,
+                Key= key,
+                ContentType= "image/"+self.image.format,
+                ACL= "public-read"
+            )
+            self.baseImageLink = '%s/%s' % ("https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com", key)
         else :
             response = requests.get(self.baseImageLink)
             source = BytesIO(response.content)
             self.image = Image.open(source)
 
+        template = TemplateCategory(templateLink= self.baseImageLink, categoryId=self.category if hasattr(self,"category") else 2)
+        db.session.add(template)
+
     def draw(self):
         # todo: upload to s3 and save record to database
-        return generate_meme(pilImage=self.image, top_text=self.upper, bottom_text=self.lower)
+        img = generate_meme(pilImage=self.image, top_text=self.upper, bottom_text=self.lower)
+       
+        img_io = BytesIO()
+        img.save(img_io, img.format, quality=70)
+        img_io.seek(0)
+
+        key = str(uuid.uuid4())
+        s3client.put_object(
+            Bucket="meme-maker-memes-flask",
+            Body= img_io,
+            Key= key,
+            ContentType= "image/"+img.format,
+            ACL= "public-read"
+        )
+        self.srcLink = '%s/%s' % ("https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com", key)
+        self.userId = 8 # dummy id for now
+        self.addToDB()
+        return img
