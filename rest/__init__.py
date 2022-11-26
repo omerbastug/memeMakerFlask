@@ -25,9 +25,6 @@ from rest.Models import User,Category,TemplateCategory,Meme, MemeText
 
 with app.app_context():
     db.create_all()
-    # res = db.engine.execute("SELECT * FROM user ORDER BY RAND() limit 1")
-    # for item in res:
-    #     print(item.id)
 
 
-from rest.Routes import helloworld, createMeme, getTheLatestMeme, register, login, greeting
+from rest.Routes import createMeme, getTheLatestMeme, index, register, login, greeting, randomMeme
