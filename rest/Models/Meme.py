@@ -61,7 +61,7 @@ class Meme(db.Model,BaseModel):
     def draw(self):
         # todo: upload to s3 and save record to database
         img = generate_meme(pilImage=self.image, top_text=self.upper, bottom_text=self.lower)
-        if self.dontSave:
+        if hasattr(self,"dontSave"):
             return img
 
         img_io = BytesIO()
