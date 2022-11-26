@@ -46,8 +46,10 @@ class Meme(db.Model,BaseModel):
             source = BytesIO(response.content)
             self.image = Image.open(source)
 
-        template = TemplateCategory(templateLink= self.baseImageLink, categoryId=self.category if hasattr(self,"category") else 2)
-        db.session.add(template)
+        if not TemplateCategory.query.filter_by(templateLink= self.baseImageLink).first():
+            template = TemplateCategory(templateLink= self.baseImageLink, categoryId=self.category if hasattr(self,"category") else 2)
+            db.session.add(template)
+
 
     def draw(self):
         # todo: upload to s3 and save record to database
