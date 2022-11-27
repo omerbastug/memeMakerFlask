@@ -20,7 +20,7 @@ db = SQLAlchemy(app)
 s3client = boto3.client("s3",
     aws_access_key_id=s3AccesID,
     aws_secret_access_key=s3AccessSecret)
-
+app.secret_key = "super secret key"
 from flaskapp.Models import User,Category,TemplateCategory,Meme, MemeText
 
 with app.app_context():

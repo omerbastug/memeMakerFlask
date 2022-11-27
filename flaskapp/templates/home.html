@@ -161,7 +161,7 @@
     </style>
 </head>
 <body>
-     
+
     <div id="wrapper" class="toggled">
 
         <!-- Sidebar -->
@@ -201,6 +201,20 @@
 
         <!-- Page Content -->
         <div id="page-content-wrapper">
+            <!-- dispay errors -->
+            {% with messages = get_flashed_messages(with_categories = true) %}
+              {% if messages %}
+                {% for key, message in messages %}
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                    <div>
+                      {{ message }}
+                    </div>
+                </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+                
             {% block maincontent %}
              
             {% endblock %}
