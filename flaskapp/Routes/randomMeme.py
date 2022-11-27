@@ -1,6 +1,6 @@
-from rest import app,db
+from flaskapp import app,db
 from flask import send_file
-from rest.Models.Meme import Meme
+from flaskapp.Models.Meme import Meme
 from io import BytesIO
 
 @app.route("/api/meme/random", methods=["get"])

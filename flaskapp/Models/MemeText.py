@@ -1,5 +1,5 @@
-from rest import db
-from rest.Models.BaseModel import BaseModel
+from flaskapp import db
+from flaskapp.Models.BaseModel import BaseModel
 
 class MemeText(db.Model,BaseModel):
     """Linking memes with categories"""

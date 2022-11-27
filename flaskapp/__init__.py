@@ -21,10 +21,10 @@ s3client = boto3.client("s3",
     aws_access_key_id=s3AccesID,
     aws_secret_access_key=s3AccessSecret)
 
-from rest.Models import User,Category,TemplateCategory,Meme, MemeText
+from flaskapp.Models import User,Category,TemplateCategory,Meme, MemeText
 
 with app.app_context():
     db.create_all()
 
 
-from rest.Routes import createMeme, getTheLatestMeme, index, register, login, greeting, randomMeme
+from flaskapp.Routes import createMeme, getTheLatestMeme, index, register, login, greeting, randomMeme

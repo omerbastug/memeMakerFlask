@@ -1,6 +1,6 @@
-from rest import app,db
+from flaskapp import app,db
 from flask import jsonify, request, send_file
-from rest.Models.GreetingMeme import GreetingMeme
+from flaskapp.Models.GreetingMeme import GreetingMeme
 from io import BytesIO
 
 @app.route("/api/greeting/", methods=["POST"])

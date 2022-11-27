@@ -1,6 +1,6 @@
-from rest import app,db
+from flaskapp import app,db
 from flask import jsonify, request
-from rest.Models.User import User
+from flaskapp.Models.User import User
 import bcrypt
 
 @app.route("/api/login", methods=["POST"])

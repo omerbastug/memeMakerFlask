@@ -1,8 +1,8 @@
-from rest import app,db
+from flaskapp import app,db
 from generateMeme import *
 from flask import render_template,request, jsonify, send_file
-from rest.Models.User import User
-from rest.Models.Meme import Meme
+from flaskapp.Models.User import User
+from flaskapp.Models.Meme import Meme
 
 @app.route("/api/creatememe", methods=["POST"])
 def create_meme():

@@ -1,5 +1,5 @@
-from rest.Models.Meme import Meme
-from rest import db
+from flaskapp.Models.Meme import Meme
+from flaskapp import db
 import requests
 import os
 from PIL import Image

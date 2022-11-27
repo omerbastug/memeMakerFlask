@@ -1,4 +1,4 @@
-from rest import db
+from flaskapp import db
 
 class BaseModel:
 

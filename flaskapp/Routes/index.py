@@ -1,4 +1,4 @@
-from rest import app
+from flaskapp import app
 from generateMeme import *
 from flask import render_template
 

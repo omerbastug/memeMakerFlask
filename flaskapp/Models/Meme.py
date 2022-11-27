@@ -1,7 +1,7 @@
-from rest import db, s3client
+from flaskapp import db, s3client
 from generateMeme import *
-from rest.Models.BaseModel import BaseModel
-from rest.Models.TemplateCategory import TemplateCategory
+from flaskapp.Models.BaseModel import BaseModel
+from flaskapp.Models.TemplateCategory import TemplateCategory
 from io import BytesIO
 import requests
 import uuid
