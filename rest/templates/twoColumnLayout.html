@@ -1,0 +1,15 @@
+{% extends 'home.html' %}
+{% block maincontent %}
+    <div id="content">
+        <div class="content-item"> 
+        {% block content1 %}
+        <img src="{{imgsrc}}">
+        {% endblock %}
+        </div>
+        <div class="content-item"> 
+        {% block content2 %}
+        <img src="{{imgsrc}}">
+        {% endblock %}
+        </div>
+    </div>
+{% endblock %}
