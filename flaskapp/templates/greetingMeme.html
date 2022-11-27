@@ -1,0 +1,92 @@
+{% extends  'twoColumnLayout.html' %}
+{% block title %}
+Create a Meme
+{% endblock %}
+{% block content1 %}
+<form id="memeform" action="/api/greeting"  enctype="multipart/form-data">
+        <input class="form-check-input" type="checkbox" value="" id="imagecheckbox">
+        <label class="form-check-label" for="imagecheckbox">
+         Use image link
+        </label>
+        <input type="file" name="image" id="image" />
+        <input type="text" placeholder="image link"  hidden name="imagelink" id="imagelink" />
+        <input type="text" placeholder="name to greet" name="username" id="username" />
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}
+
+{% block content2 %}
+<img id="greetingimg" style="width: 100%;" alt="sample greeting image">
+{% endblock %}
+
+{% block js%}
+    <script>
+        $.ajax({
+            contentType: 'application/json',
+            data: JSON.stringify({
+                "username": "greeting page user",
+                "getLink" : "1"
+            }),
+            dataType: 'json',
+            success: function(data){
+                $("#greetingimg").attr("src" , data.src)
+            },
+            error: function(){
+                console.log("oopsie");
+            },
+            processData: false,
+            type: 'POST',
+            url: '/api/greeting'
+        });
+        $("#imagecheckbox").change(function() {
+            if(this.checked) {
+                $("#imagelink").removeAttr("hidden")
+                $("#image").attr("hidden", true)
+            } else {
+                $("#image").removeAttr("hidden")
+                $("#imagelink").attr("hidden", true)
+            }   
+        });
+        $('#memeform').on('submit',(function(e) {
+            e.preventDefault()
+            var data = new FormData();
+            if($("#imagecheckbox").is(":checked")){
+                data.append("image",$("#imagelink").val())
+            } else {
+                data.append("image",$('#image')[0].files[0]);
+            }
+            console.log("image",data.get("image"));
+            if (data.get("image") == undefined){
+                data.delete("image")
+            }
+            data.append("username", $("#username").val())
+            console.log("username",data.get("username"));
+
+            if (data.get("username") == undefined || data.get("username") == ""){
+                data.delete("username")
+            }
+            data.append("getLink", "1")
+            console.log(data);
+            jQuery.ajax({
+                url: '/api/greeting',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                success: function(data){
+                    link = data.src;
+                    console.log(link);
+                    // disable form
+                    $("#memeform input").attr("disabled","disabled");
+                    
+                    // display image
+                    html = `<img style="width: 100%;" src="${link}" alt="created meme">
+                            <a href="${link}">  link to meme </a >`
+                    $(".content-item:last").html(html);
+                }
+            });
+        }));
+    </script>
+{% endblock %}

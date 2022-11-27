@@ -8,14 +8,17 @@ def greet_user():
     link = None
     username = None
     getLink = False
-    try:
-        body = request.get_json()
+    try: 
+        body = request.form if request.content_type.startswith("multipart/form-data") else request.get_json()
+        link = request.files.get("image").stream if request.files else body.get("image")
+        if link == 'undefined':
+            link = None
         username = body.get("username")
-        link = body.get("image")
-
         getLink = body.get("getLink") == "1"
     except:
         pass
+    
+
     greet = GreetingMeme(baseImageLink= link, dontSaveTemplate= True, username= username)
     image = greet.draw()
 
