@@ -172,7 +172,10 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">home page</a>
+                    <a href="{{url_for('index')}}">Home Page</a>
+                </li>
+                <li>
+                  <a href="{{url_for('create_meme_page')}}">Create a meme</a>
                 </li>
                 <li>
                     <a href="#">My Memes</a>
@@ -222,5 +225,9 @@
     </script>
 </body>
 
-
+{% block js %}
+    <script>
+      console.log("default js");
+    </script>
+{% endblock %}
 </html>

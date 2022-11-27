@@ -12,11 +12,10 @@ def create_meme():
         lower = body.get("lower") or ""
         upper = body.get("upper") or ""
     except:
-        return send_file("../error cat.png")
+        return send_file("../error cat.png"), 500
 
-    
     if not source or upper + lower == "":
-        return send_file("../error cat.png")
+        return send_file("../error cat.png"), 500
 
         
     meme = Meme(upper= upper, lower= lower, baseImageLink= source)

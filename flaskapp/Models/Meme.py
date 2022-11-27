@@ -13,8 +13,8 @@ class Meme(db.Model,BaseModel):
     memeId = db.Column(db.Integer(), primary_key=True) # auto increment on default
     upper = db.Column(db.String(length = 200), nullable=True)
     lower = db.Column(db.String(length = 200), nullable=True)
-    baseImageLink = db.Column(db.String(length = 200), nullable=False)
-    srcLink = db.Column(db.String(length = 200), nullable=False, unique=True)
+    baseImageLink = db.Column(db.String(length = 500), nullable=False)
+    srcLink = db.Column(db.String(length = 500), nullable=False, unique=True)
     userId = db.Column(db.Integer(), db.ForeignKey("user.id"), nullable=False)
 
     def __init__(self, **kwargs):
@@ -53,7 +53,7 @@ class Meme(db.Model,BaseModel):
             source = BytesIO(response.content)
             self.image = Image.open(source)
 
-        if not TemplateCategory.query.filter_by(templateLink= self.baseImageLink).first() and not hasattr(self,"dontSaveTemplate"):
+        if not TemplateCategory.query.filter_by(templateLink= self.baseImageLink).first() and (not hasattr(self,"dontSaveTemplate") or self.dontSaveTemplate == None):
             template = TemplateCategory(templateLink= self.baseImageLink, categoryId=self.category if hasattr(self,"category") else 2)
             db.session.add(template)
 
