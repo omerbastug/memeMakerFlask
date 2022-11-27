@@ -4,7 +4,7 @@ from flaskapp.Models.Meme import Meme
 from io import BytesIO
 
 @app.route("/api/meme/random", methods=["get"])
-def radom_meme():
+def random_meme():
     # get 2 random rows from custom memes
     res = db.session.execute("SELECT baseImageLink,upper,lower from meme m join template_category tc on m.baseImageLink = tc.templateLink where tc.categoryId = 2 order by rand() limit 2")
     rows = [row for row in res]
