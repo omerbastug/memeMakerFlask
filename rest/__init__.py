@@ -10,7 +10,7 @@ password = config("DB_PASSWORD")
 host = config("DB_HOST")
 port = config("DB_PORT")
 database = config("DB_NAME")
-s3AccesID = config("S3_ACCES_KEY_ID")
+s3AccesID = config("S3_ACCESS_KEY_ID")
 s3AccessSecret = config("S3_ACCESS_SECRET")
 
 app = Flask(__name__)
