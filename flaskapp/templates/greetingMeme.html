@@ -22,23 +22,9 @@ Create a Meme
 
 {% block js%}
     <script>
-        $.ajax({
-            contentType: 'application/json',
-            data: JSON.stringify({
-                "username": "greeting page user",
-                "getLink" : "1"
-            }),
-            dataType: 'json',
-            success: function(data){
-                $("#greetingimg").attr("src" , data.src)
-            },
-            error: function(){
-                console.log("oopsie");
-            },
-            processData: false,
-            type: 'POST',
-            url: '/api/greeting'
-        });
+        samplename = JSON.parse(localStorage.getItem("user"))?.fullName
+        $("#greetingimg").attr("src" , "/api/greeting/get?username="+(samplename || "greeting page user") )
+
         $("#imagecheckbox").change(function() {
             if(this.checked) {
                 $("#imagelink").removeAttr("hidden")

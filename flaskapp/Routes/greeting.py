@@ -3,11 +3,25 @@ from flask import jsonify, request, send_file
 from flaskapp.Models.GreetingMeme import GreetingMeme
 from io import BytesIO
 
-@app.route("/api/greeting/", methods=["GET"])
+@app.route("/api/greeting/get", methods=["GET"])
 def greet_user():
     link = None
     username = request.args.get("username", default=None, type=str)
-    getLink = request.args.get("getLink", default="", type=str) == "1"
+
+    greet = GreetingMeme(baseImageLink= link, dontSaveTemplate= True, dontSave=True, username= username)
+    image = greet.draw()
+
+    img_io = BytesIO()
+    image.save(img_io, image.format, quality=70)
+    img_io.seek(0)
+    return send_file(img_io, mimetype='image/'+image.format)
+
+
+@app.route("/api/greeting", methods=["POST"])
+def greet_user_post():
+    link = None
+    username = None
+    getLink = False
     try: 
         body = request.form if request.content_type.startswith("multipart/form-data") else request.get_json()
         link = request.files.get("image").stream if request.files else body.get("image")

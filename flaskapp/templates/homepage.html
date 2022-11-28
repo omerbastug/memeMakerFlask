@@ -15,7 +15,7 @@ MemeMaker
     if(!localStorage.getItem("loggedIn")){
         $("#image").attr("src", "https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/f3590936-6862-4820-9fc5-8c0da188749b" )
     } else {
-        $("#image").attr("src", "/api/greeting?username="+(JSON.parse(localStorage.getItem("user")).fullName) )
+        $("#image").attr("src", "/api/greeting/get?username="+(JSON.parse(localStorage.getItem("user")).fullName) )
     }
 </script>
 {% endblock %}
