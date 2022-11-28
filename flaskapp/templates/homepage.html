@@ -7,5 +7,15 @@ MemeMaker
 {% endblock %}
 
 {% block content2 %}
-<img style="width: 100%;" src="https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/f3590936-6862-4820-9fc5-8c0da188749b" alt="the giggest chad">
+    <img id="image" style="width: 100%;" alt="the giggest chad">
+{% endblock %} 
+
+{% block js %}
+<script>
+    if(!localStorage.getItem("loggedIn")){
+        $("#image").attr("src", "https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/f3590936-6862-4820-9fc5-8c0da188749b" )
+    } else {
+        $("#image").attr("src", "/api/greeting?username="+(JSON.parse(localStorage.getItem("user")).fullName) )
+    }
+</script>
 {% endblock %}

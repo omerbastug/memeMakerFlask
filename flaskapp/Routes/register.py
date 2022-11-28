@@ -16,8 +16,11 @@ def register():
     try:
         newuser = User(fullName=body['fullname'],email=body['email'],hash=hash,salt=salt)
         newuser.addToDB()
+        respUser = newuser.as_dict()
+        del respUser['hash']
+        del respUser['salt']  
     except BaseException as err:
         print(err)
         return jsonify({"error":err}), 400
 
-    return jsonify({"success":"account created"}) , 201
+    return jsonify({"success":"account created", "user" : respUser}) , 201
