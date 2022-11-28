@@ -23,5 +23,7 @@ def login():
     except BaseException as err:
         print(err)
         return jsonify({"error":"?"}), 500
-        
-    return jsonify({"success":"logged in " + str(user.id)})
+    respUser = user.as_dict()
+    del respUser['hash']
+    del respUser['salt']    
+    return jsonify({"success":"logged in " + str(user.id), "user" : respUser})
