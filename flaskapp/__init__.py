@@ -27,4 +27,4 @@ with app.app_context():
     db.create_all()
 
 
-from flaskapp.Routes import createMeme, getTheLatestMeme, index, register, login, greeting, randomMeme, randomMemePage, createMemePage, greetingPage, registerPage, loginPage
+from flaskapp.Routes import createMeme, getTheLatestMeme, index, register, login, greeting, randomMeme, randomMemePage, createMemePage, greetingPage, registerPage, loginPage, favicon
