@@ -58,7 +58,7 @@ Register
                 success: function(result) {
                   console.log(result);
                   localStorage.setItem("token", result.token);
-                  localStorage.setItem("user", user);
+                  localStorage.setItem("user", JSON.stringify(result.user));
                   localStorage.setItem("loggedIn", true);
                   location.replace("/")
                 },

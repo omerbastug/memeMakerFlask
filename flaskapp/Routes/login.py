@@ -1,7 +1,6 @@
 from flaskapp import app,db
 from flask import jsonify, request
 from flaskapp.Models.User import User
-import bcrypt
 
 @app.route("/api/login", methods=["POST"])
 def login():
@@ -10,16 +9,10 @@ def login():
         user = User.query.filter_by(email=body['email']).first()
         if not user:
             return jsonify({"error":"user not found"}), 404
-        bytepassword = body['password'].encode('utf-8')
 
-        salt = user.salt.encode('utf-8')
-
-        hash = bcrypt.hashpw(bytepassword, salt)
-
-        userhash = user.hash.encode('utf-8')
-
-        if hash != userhash:
+        if not user.truePassword(body['password']):
             return jsonify({"error":"wrong password"}), 401
+
     except BaseException as err:
         print(err)
         return jsonify({"error":"?"}), 500

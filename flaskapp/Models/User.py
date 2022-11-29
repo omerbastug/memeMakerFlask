@@ -1,5 +1,6 @@
 from flaskapp import db
 from flaskapp.Models.BaseModel import BaseModel
+import bcrypt
 class User(db.Model,BaseModel):
     """User model"""
 
@@ -8,6 +9,28 @@ class User(db.Model,BaseModel):
     email = db.Column(db.String(length = 200), nullable=False, unique=True)
     hash = db.Column(db.String(length=64), nullable=False)
     salt = db.Column(db.String(length=64), nullable=False)
+
+    @property
+    def password(self):
+        return self.password
+
+    @password.setter
+    def password(self,plainpw):
+        bytepassword = plainpw.encode('utf-8')
+        salt = bcrypt.gensalt()
+        hash = bcrypt.hashpw(bytepassword, salt)
+        self.hash = hash
+        self.salt = salt
+
+    def truePassword(self, passwordToCheck):
+        bytepassword = passwordToCheck.encode('utf-8')
+        salt = self.salt.encode('utf-8')
+
+        hash = bcrypt.hashpw(bytepassword, salt)
+
+        userhash = self.hash.encode('utf-8')
+
+        return hash == userhash
 
     def addUser(self):
         db.session.add(self)
