@@ -214,8 +214,7 @@
             {% with messages = get_flashed_messages(with_categories = true) %}
               {% if messages %}
                 {% for key, message in messages %}
-                <div class="alert alert-{{ key }} d-flex align-items-center" role="alert">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                <div class="alert alert-{{ key }} align-items-center" role="alert">
                     <div>
                       {{ message }}
                     </div>
@@ -255,4 +254,11 @@
       console.log("default js");
     </script>
 {% endblock %}
+{% if  get_flashed_messages(with_categories = true)  %}
+    <script>
+      $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+        $(".alert").slideUp(500); 
+      });
+    </script>
+{% endif %}
 </html>
