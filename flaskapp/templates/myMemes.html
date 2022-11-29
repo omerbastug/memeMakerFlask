@@ -1,0 +1,82 @@
+{% extends 'home.html' %} 
+{%block title %}
+My Memes
+{%endblock%}
+{%block css%}
+<style>
+    .memesWrapper{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+    }
+    .imgWrapper{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .imgboom{
+        width: 25vw; 
+        min-width: 300px;
+        max-width: 350px;
+        margin: 1rem 0;
+    }
+
+    .pageNavigator {
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+      }
+
+    .pageNavigator:hover {
+        background-color: white;
+        color: black;
+    }
+
+    .previous {
+        background-color: #f1f1f1;
+        color: black;
+    }
+
+    .next {
+        background-color: #181818;
+        color: white;
+    }
+</style>
+{%endblock%}
+{%block maincontent%}
+    <div class="memesWrapper">
+        {% for meme in memes %}
+        <div class="imgWrapper">
+            <a href="{{meme.srcLink}}" target="_blank" rel="noopener noreferrer">
+            <img class="imgboom" src="{{meme.srcLink}}" > </a>
+        </div>
+        {% endfor %}
+    </div>
+    <div>
+        <a id="prev" class="pageNavigator previous">&laquo; </a>
+        <a id="next" class="pageNavigator next"> &raquo;</a>
+    </div>
+{%endblock%}
+
+{%block js%}
+
+<script>
+    let page = parseInt("{{request.args.get('page', '1')}}");
+    $(".pageNavigator.previous").attr("href",'/mymemes?page='+(page-1))
+    $(".pageNavigator.next").attr("href",'/mymemes?page='+(page+1))
+</script>
+{% if request.args.get('page', '0') == '0' %}
+    <script>
+        // $(".pageNavigator.previous").attr("disabled",true) will not disable it for some reason 
+        $(".pageNavigator.previous").click(function(e) {e.preventDefault();});
+    </script>
+{% endif%}
+
+{% if memes|length < 10 %}
+    <script>
+        $(".pageNavigator.next").click(function(e) { e.preventDefault(); });
+    </script>
+{% endif%}
+
+{%endblock%}
