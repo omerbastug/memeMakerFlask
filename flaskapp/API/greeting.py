@@ -1,10 +1,13 @@
 from flaskapp import app,db
-from flask import jsonify, request, send_file
+from flask import jsonify, request, send_file, redirect
+from flask_login import current_user
 from flaskapp.Models.GreetingMeme import GreetingMeme
 from io import BytesIO
 
 @app.route("/api/greeting/get", methods=["GET"])
 def greet_user():
+    if not current_user.is_authenticated:
+        return redirect("https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/990d12be-d070-438d-b9b3-6849c08c84d4")
     link = None
     username = request.args.get("username", default=None, type=str)
 
@@ -19,6 +22,8 @@ def greet_user():
 
 @app.route("/api/greeting", methods=["POST"])
 def greet_user_post():
+    if not current_user.is_authenticated:
+        return jsonify({"src":"https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/990d12be-d070-438d-b9b3-6849c08c84d4"})
     link = None
     username = None
     getLink = False
@@ -33,7 +38,7 @@ def greet_user_post():
         pass
     
 
-    greet = GreetingMeme(baseImageLink= link, dontSaveTemplate= True, username= username)
+    greet = GreetingMeme(baseImageLink= link, dontSaveTemplate= True, username= username, userId = current_user.id)
     image = greet.draw()
 
     if getLink:

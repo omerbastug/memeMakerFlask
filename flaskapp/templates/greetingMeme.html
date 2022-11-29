@@ -1,6 +1,6 @@
 {% extends  'twoColumnLayout.html' %}
 {% block title %}
-Create a Meme
+Generate greeting
 {% endblock %}
 {% block content1 %}
 <form id="memeform" action="/api/greeting"  enctype="multipart/form-data">
@@ -13,7 +13,7 @@ Create a Meme
         <input type="text" placeholder="name to greet" name="username" id="username" />
     <input type="submit" value="Submit">
 </form>
-
+<div id="block" style="display: none;" > Log in to use this </div>
 {% endblock %}
 
 {% block content2 %}
@@ -22,8 +22,7 @@ Create a Meme
 
 {% block js%}
     <script>
-        samplename = JSON.parse(localStorage.getItem("user"))?.fullName
-        $("#greetingimg").attr("src" , "/api/greeting/get?username="+(samplename || "greeting page user") )
+        $("#greetingimg").attr("src" , "/api/greeting/get?username="+("{{current_user.fullName}}" || "greeting page user") )
 
         $("#imagecheckbox").change(function() {
             if(this.checked) {
@@ -75,4 +74,17 @@ Create a Meme
             });
         }));
     </script>
+    {% if not current_user.is_authenticated %}
+    <script>
+        $("#memeform input").attr("disabled","disabled");
+        $("#memeform").hover(()=>{
+            $("#block").show()
+        },()=>{
+            $("#block").hide()
+        })
+        $("#memeform").click(()=>{
+            $("#block").show()
+        })
+    </script>
+    {% endif %}
 {% endblock %}
