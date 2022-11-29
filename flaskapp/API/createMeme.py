@@ -1,11 +1,14 @@
 from flaskapp import app,db
-from generateMeme import *
-from flask import render_template,request, jsonify, send_file
+from flask import request, jsonify, send_file
 from flaskapp.Models.User import User
 from flaskapp.Models.Meme import Meme
+from io import BytesIO
+from flask_login import current_user
 
 @app.route("/api/creatememe", methods=["POST"])
 def create_meme():
+    if not current_user.is_authenticated:
+        return jsonify({"src":"https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/990d12be-d070-438d-b9b3-6849c08c84d4"})
     try: 
         body = request.form if request.content_type.startswith("multipart/form-data") else request.get_json()
         source = request.files.get("image").stream if request.files else body.get("image")
@@ -18,7 +21,7 @@ def create_meme():
         return send_file("../error cat.png"), 500
 
         
-    meme = Meme(upper= upper, lower= lower, baseImageLink= source)
+    meme = Meme(upper= upper, lower= lower, baseImageLink= source, userId=current_user.id)
     pil_img =meme.draw() 
 
     if body.get("getLink") == "1":

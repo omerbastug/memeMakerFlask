@@ -77,6 +77,5 @@ class Meme(db.Model,BaseModel):
             ACL= "public-read"
         )
         self.srcLink = '%s/%s' % ("https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com", key)
-        self.userId = 8 # dummy id for now
         self.addToDB()
         return img

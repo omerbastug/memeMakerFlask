@@ -23,7 +23,7 @@ def login_redirect():
 
     except BaseException as err:
         print(err)
-        flash("oopsie, served got bamboozled", category='danger')
+        flash("oopsie, server got bamboozled", category='danger')
         return redirect(url_for('login_meme_page'))
 
     login_user(user)

@@ -14,7 +14,7 @@ Create a Meme
         <input type="text" placeholder="lower text" name="lower" id="meme-lower" />
     <input type="submit" value="Submit">
 </form>
-
+<div id="block" style="display: none;"> Login to create meme </div>
 {% endblock %}
 
 {% block content2 %}
@@ -67,4 +67,17 @@ Create a Meme
             });
         }));
     </script>
+    {% if not current_user.is_authenticated %}
+        <script>
+            $('#memeform input').attr('disabled',true)
+            $("#memeform").hover(()=>{
+                $("#block").show()
+            },()=>{
+                $("#block").hide()
+            })
+            $("#memeform").click(()=>{
+                $("#block").show()
+            })
+        </script>
+    {% endif %}
 {% endblock %}
