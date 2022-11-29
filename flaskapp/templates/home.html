@@ -190,18 +190,18 @@
                 <li>
                     <a href="{{url_for('greeting_meme_page')}}">Greet my friend</a>
                 </li>
-                
-                {% if LoggedIn == true %}
-                <li>
-                  <a href="#" style="font-size: 2rem;">Log out</a>
-                </li>
+
+                {% if current_user.is_authenticated %}
+                  <li>
+                    <a href="#" >Log out</a>
+                  </li>
                 {% else %}
-                <li>
-                  <a href="{{url_for('login_meme_page')}}">Login</a>
-                </li>
-                <li>
-                  <a href="{{url_for('register_meme_page')}}">Register</a>
-                </li>
+                  <li>
+                    <a href="{{url_for('login_meme_page')}}">Login</a>
+                  </li>
+                  <li>
+                    <a href="{{url_for('register_meme_page')}}">Register</a>
+                  </li>
                 {% endif %}
             </ul>
         </div>
@@ -214,7 +214,7 @@
             {% with messages = get_flashed_messages(with_categories = true) %}
               {% if messages %}
                 {% for key, message in messages %}
-                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <div class="alert alert-{{ key }} d-flex align-items-center" role="alert">
                     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                     <div>
                       {{ message }}
@@ -246,6 +246,7 @@
     if ($(window).width()< 800){
         $("#wrapper").toggleClass("toggled");
     };
+    localStorage.setItem("user", "{{current_user.id}}")
     </script>
 </body>
 

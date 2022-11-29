@@ -1,7 +1,8 @@
 from flaskapp import db
 from flaskapp.Models.BaseModel import BaseModel
 import bcrypt
-class User(db.Model,BaseModel):
+from flask_login import UserMixin
+class User(db.Model,BaseModel,UserMixin):
     """User model"""
 
     id = db.Column(db.Integer(), primary_key=True) # auto increment on default

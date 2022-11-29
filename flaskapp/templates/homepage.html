@@ -7,15 +7,9 @@ MemeMaker
 {% endblock %}
 
 {% block content2 %}
-    <img id="image" style="width: 100%;" alt="the giggest chad">
+    {% if current_user.is_authenticated %}
+        <img id="image" src="/api/greeting/get?username={{ current_user.fullName }}" style="width: 100%;" alt="the giggest chad">
+    {% else %}
+        <img id="image" src="https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/f3590936-6862-4820-9fc5-8c0da188749b" style="width: 100%;" alt="the giggest chad">
+    {% endif %}
 {% endblock %} 
-
-{% block js %}
-<script>
-    if(!localStorage.getItem("loggedIn")){
-        $("#image").attr("src", "https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/f3590936-6862-4820-9fc5-8c0da188749b" )
-    } else {
-        $("#image").attr("src", "/api/greeting/get?username="+(JSON.parse(localStorage.getItem("user")).fullName) )
-    }
-</script>
-{% endblock %}
