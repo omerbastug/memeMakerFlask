@@ -26,5 +26,5 @@ from flaskapp.Models import User,Category,TemplateCategory,Meme, MemeText
 with app.app_context():
     db.create_all()
 
-
-from flaskapp.Routes import createMeme, getTheLatestMeme, index, register, login, greeting, randomMeme, randomMemePage, createMemePage, greetingPage, registerPage, loginPage, favicon
+from flaskapp.API import createMeme, getTheLatestMeme, greeting, login, register, randomMeme
+from flaskapp.Routes import  index, randomMemePage, createMemePage, greetingPage, registerPage, loginPage, favicon
