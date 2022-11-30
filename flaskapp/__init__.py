@@ -28,5 +28,10 @@ from flaskapp.Models import User,Category,TemplateCategory,Meme, MemeText
 with app.app_context():
     db.create_all()
 
-from flaskapp.API import createMeme, getTheLatestMeme, greeting, login, register, randomMeme
+from mailjet_rest import Client
+api_key = config('MAILJET_API_KEY')
+api_secret = config('MAILJET_API_SECRET')
+mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+
+from flaskapp.API import test, createMeme, getTheLatestMeme, greeting, login, register, randomMeme
 from flaskapp.Routes import  index, randomMemePage, createMemePage, greetingPage, registerPage, loginPage, logout, favicon, myMemesPage
