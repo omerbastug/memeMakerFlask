@@ -63,8 +63,9 @@ My Memes
 
 <script>
     let page = parseInt("{{request.args.get('page', '1')}}");
-    $(".pageNavigator.previous").attr("href",'/mymemes?page='+(page-1))
-    $(".pageNavigator.next").attr("href",'/mymemes?page='+(page+1))
+    let userid = parseInt("{{request.args.get('user', current_user.id)}}");
+    $(".pageNavigator.previous").attr("href",'/memes?user='+userid+'&page='+(page-1))
+    $(".pageNavigator.next").attr("href",'/memes?user='+userid+'&page='+(page+1))
 </script>
 {% if request.args.get('page', '0') == '0' %}
     <script>

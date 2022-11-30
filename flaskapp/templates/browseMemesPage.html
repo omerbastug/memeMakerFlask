@@ -1,0 +1,129 @@
+{% extends 'home.html' %} 
+{%block title %}
+Browse Memes
+{%endblock%}
+{%block css%}
+<style>
+    .memesWrapper{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        width: 100%;
+    }
+    .imgWrapper{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .imgboom{
+        width: 25vw; 
+        min-width: 300px;
+        max-width: 350px;
+        margin: 1rem 0;
+    }
+    a{
+        color: black;
+        text-decoration: none!important;
+    }
+    .listWrapper{
+        width: 50%;
+    }
+    .input-group.rounded{
+        width: 50%;
+    }
+    @media only screen and (max-width: 600px) {
+        .listWrapper{
+            width: 90%;
+        }
+        .input-group.rounded{
+            width: 90%;
+        }
+      }
+</style>
+{%endblock%}
+{%block maincontent%}
+    <div class="input-group rounded">
+        <input id="searchBar" type="search" class="form-control rounded" placeholder="Search user by name" aria-label="Search" aria-describedby="search-addon" />
+        <div id="searchButton">
+            <span class="input-group-text border-0" id="search-addon">
+                <i class="fas fa-search"></i>
+            </span>
+        </div>
+    </div>
+    <div class="memesWrapper">
+        {% for src in memes %}
+        <div class="imgWrapper">
+            <a href="{{src[0]}}" target="_blank" rel="noopener noreferrer">
+            <img class="imgboom" src="{{src[0]}}" > </a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="listWrapper" style="display: none;">
+            
+    </div>
+{%endblock%}
+
+{%block js%}
+<script>
+    function listUsers(name){
+        // get users with name
+        $.ajax({
+            url:"/api/user?name="+name,
+            method: "GET",
+            cache: false,
+            success: (data) => {
+                let {users} = data
+                // render user list items
+                html = `<ul class="list-group list-group-light">`
+                for (index in users){
+                    html+=`
+                    <a href="/memes?user=${users[index].id}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-bold">${users[index].fullname}</div>
+                                <div class="text-muted">${users[index].email}</div>
+                            </div>
+                        </li>
+                    </a>`
+                }
+                if(users.length ==0){
+                    html+=`
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-bold">No users found</div>
+                                <div class="text-muted">sorry :(</div>
+                            </div>
+                        </li>`
+                }
+                html += `</ul>`
+                $(".listWrapper").html(html);
+                $(".listWrapper").show();
+                $( ".memesWrapper" ).hide()
+            },
+            error: (xhr)=>{
+                console.log("yikes");
+            }
+        })
+    }
+    $( "#searchBar" ).on('input', function(){
+        let len =  $(this).val().length
+        if(len === 0){
+            $( ".memesWrapper" ).show()
+            $(".listWrapper").hide();
+            return
+        }
+        setTimeout(()=>{
+            // check unchanged
+            if(len ==  $(this).val().length){
+                // do ajax
+                listUsers($(this).val())
+            }
+        }, 300)
+    });
+    $("#searchButton").on('click',()=>{
+        listUsers($("#searchBar").val())
+    })
+</script>
+
+{%endblock%}
