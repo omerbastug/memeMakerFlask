@@ -1,4 +1,4 @@
-from flaskapp import app,db
+from flaskapp import app,db, limiter
 from flask import jsonify, request, send_file, redirect
 from flask_login import current_user
 from flaskapp.Models.GreetingMeme import GreetingMeme
@@ -21,6 +21,7 @@ def greet_user():
 
 
 @app.route("/api/greeting", methods=["POST"])
+@limiter.limit("10 per day", key_func = lambda : current_user.id)
 def greet_user_post():
     if not current_user.is_authenticated:
         return jsonify({"src":"https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/990d12be-d070-438d-b9b3-6849c08c84d4"})
