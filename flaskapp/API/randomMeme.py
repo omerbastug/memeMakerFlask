@@ -1,11 +1,14 @@
-from flaskapp import app, db, limiter
+from flaskapp import app, db, limiter, sample_scope
 from flask import send_file
 from flaskapp.Models.Meme import Meme
 from io import BytesIO
 from flask_limiter.util import get_remote_address
+from flask_login import current_user
 
-@limiter.limit("10 per day", key_func = get_remote_address)
 @app.route("/api/meme/random", methods=["get"])
+@limiter.limit("10 per day", key_func = get_remote_address, exempt_when= lambda: current_user.is_authenticated and current_user.id == 1)
+@limiter.limit("10/hour")
+@sample_scope
 def random_meme():
     # get 2 random rows from custom memes
     res = db.session.execute("SELECT baseImageLink,upper,lower from meme m join template_category tc on m.baseImageLink = tc.templateLink where tc.categoryId = 2 order by rand() limit 2")

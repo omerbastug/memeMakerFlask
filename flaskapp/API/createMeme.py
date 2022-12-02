@@ -1,12 +1,14 @@
-from flaskapp import app, limiter
+from flaskapp import app, limiter, sample_scope
 from flask import request, jsonify, send_file
 from flaskapp.Models.User import User
 from flaskapp.Models.Meme import Meme
 from io import BytesIO
 from flask_login import current_user
 
-@limiter.limit("10 per day", key_func = lambda : current_user.id)
 @app.route("/api/creatememe", methods=["POST"])
+@limiter.limit("10 per day", key_func = lambda : current_user.id, exempt_when= lambda: current_user.is_authenticated and current_user.id == 1)
+@limiter.limit("10/hour")
+@sample_scope
 def create_meme():
     if not current_user.is_authenticated:
         return jsonify({"src":"https://meme-maker-memes-flask.s3.eu-central-1.amazonaws.com/990d12be-d070-438d-b9b3-6849c08c84d4"})

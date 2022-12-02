@@ -6,6 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 import boto3
 from flask_login import LoginManager, current_user
 from flask_limiter import Limiter
+from dotenv import load_dotenv
+
+load_dotenv()
 
 user = config("DB_USER")
 password = config("DB_PASSWORD")
@@ -23,7 +26,11 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 
 limiter = Limiter(app,
-key_func= lambda: current_user.id)
+key_func= lambda: current_user.is_authenticated and current_user.id)
+
+def sample_scope(endpoint_name):
+    return current_user.is_authenticated and current_user.id == 1
+sample_scope = limiter.shared_limit("100/day", scope=sample_scope)
 
 s3client = boto3.client("s3",
     aws_access_key_id=s3AccesID,
