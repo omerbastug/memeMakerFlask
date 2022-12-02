@@ -7,7 +7,7 @@
 
 * Login managment and API rate limit implemented with flask helper modules.
 
-* Image handling and meme generating implementing with pillow module.
+* Image handling and meme generating implementation with pillow module.
 
 * S3 bucket used as storage and MySQL as DBMS.
 
